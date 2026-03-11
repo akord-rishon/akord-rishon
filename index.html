@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>אקורד ראשון | קהילת המוזיקה והגיטרה שלך 🎸</title>
-    <meta name="description" content="אקורד ראשון - הבית שלכם למוזיקה! רילסים עם כתוביות, חדשות מוזיקה, סקרים בקהילת הוואטסאפ וכל מה שקורה בעולם הנגינה. הצטרפו אלינו ברשתות.">
-    
+    <title>אקורד ראשון | קהילת המוזיקה של ישראל 🎸</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
@@ -26,160 +23,49 @@
             animation: fadeIn 1.5s ease;
         }
 
-        .logo {
-            width: 220px;
-            margin-bottom: 25px;
-            animation: float 4s ease-in-out infinite;
-            max-width: 100%;
-        }
+        .logo { width: 220px; margin-bottom: 25px; animation: float 4s ease-in-out infinite; max-width: 100%; }
+        h1 { font-size: 42px; margin-bottom: 10px; color: #ff2a2a; text-shadow: 0 0 15px rgba(255, 0, 0, 0.6); }
+        .subtitle { color: #aaa; margin-bottom: 40px; font-size: 18px; }
 
-        h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
-            color: #ff2a2a;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-        }
+        .links { display: flex; flex-direction: column; gap: 16px; }
 
-        .subtitle {
-            color: #aaa;
-            margin-bottom: 40px;
-            font-size: 18px;
-        }
-
-        .links {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* עיצוב אחיד לכל הכפתורים */
         .btn {
-            text-decoration: none;
-            background: #e11b1b;
-            padding: 18px;
-            border-radius: 14px;
-            font-size: 20px;
-            font-weight: bold;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: 0.3s;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
-            border: none; /* ביטול מסגרות */
-            cursor: pointer;
-            width: 100%;
-            box-sizing: border-box; /* מבטיח שהפדינג לא יגדיל את הכפתור */
+            text-decoration: none; background: #e11b1b; padding: 18px; border-radius: 14px;
+            font-size: 20px; font-weight: bold; color: white; display: flex;
+            align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5); border: none; cursor: pointer;
+            width: 100%; box-sizing: border-box;
         }
 
-        .btn:hover {
-            transform: scale(1.05);
-            background: #ff2a2a;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
-        }
-
-        /* רק שינוי צבע לכפתור המשחק - בלי שינוי גודל או מסגרת */
-        .btn-game {
-            background: linear-gradient(45deg, #ff2a2a, #5a0000);
-        }
+        .btn:hover { transform: scale(1.05); background: #ff2a2a; box-shadow: 0 0 20px rgba(255, 0, 0, 0.7); }
+        .btn-game { background: linear-gradient(45deg, #ff2a2a, #5a0000); }
 
         #gameOverlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98);
-            z-index: 9999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            box-sizing: border-box;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98); z-index: 9999; flex-direction: column;
+            align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
         }
 
-        #gameCanvas {
-            border: 4px solid #ff2a2a;
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-            background: #000;
-            max-width: 100%;
-            max-height: 45vh;
-        }
-
-        .stats-container {
-            margin-bottom: 15px;
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .high-score {
-            color: #ffd700;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        #muteBtn {
-            position: absolute;
-            left: 10px;
-            top: 0;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
+        #gameCanvas { border: 4px solid #ff2a2a; box-shadow: 0 0 30px rgba(255, 0, 0, 0.5); background: #000; max-width: 100%; max-height: 45vh; }
+        .stats-container { margin-bottom: 15px; position: relative; width: 100%; max-width: 400px; }
+        .high-score { color: #ffd700; font-size: 24px; font-weight: bold; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
 
         .controls {
-            display: none;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 15px;
+            display: none; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px;
+            direction: ltr; 
         }
 
-        .control-btn {
-            width: 55px;
-            height: 55px;
-            background: #444;
-            border-radius: 10px;
-            border: none;
-            color: white;
-            font-size: 24px;
-        }
+        .control-btn { width: 55px; height: 55px; background: #444; border-radius: 10px; border: none; color: white; font-size: 24px; }
 
-        .game-footer-btns {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            width: 100%;
-            max-width: 400px;
-        }
+        .game-footer-btns { display: flex; gap: 10px; margin-top: 20px; width: 100%; max-width: 400px; direction: rtl; }
+        .btn-finish { background: #28a745 !important; }
 
-        .btn-finish {
-            background: #28a745 !important;
-        }
+        footer { margin-top: 60px; color: #777; font-size: 14px; }
 
-        footer {
-            margin-top: 60px;
-            color: #777;
-            font-size: 14px;
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0); }
-        }
-
-        @media (max-width: 480px) {
-            h1 { font-size: 32px; }
-            .controls { display: grid; }
-        }
+        @media (max-width: 480px) { h1 { font-size: 32px; } .controls { display: grid; } }
     </style>
 </head>
 
@@ -196,8 +82,7 @@
             <a class="btn" href="https://www.facebook.com/share/1GkQ8phhyr/?mibextid=wwXIfr" target="_blank">👍 פייסבוק</a>
             <a class="btn" href="https://youtube.com/@first_chord?si=DOU_n5thYuaH4vM-" target="_blank">▶️ יוטיוב</a>
             <a class="btn" href="https://whatsapp.com/channel/0029Vb6I5yh6GcGEigUMEu3J" target="_blank">💬 וואטסאפ</a>
-            
-            <button class="btn btn-game" onclick="openGame()">🐍 לשחק עם אקורד ראשון</button>
+            <button class="btn btn-game" onclick="openGame()">🐍 שחק אקורד ראשון</button>
         </div>
 
         <footer>©️ אקורד ראשון</footer>
@@ -205,8 +90,8 @@
 
     <div id="gameOverlay">
         <div class="stats-container">
-            <button id="muteBtn" onclick="toggleMute()">🔊</button>
-            <div id="highScoreDisplay" class="high-score">שיא גינס: 0</div>
+            <button id="muteBtn" style="position: absolute; left: 10px; top: 0; background:none; border:none; color:white; font-size:24px;" onclick="toggleMute()">🔊</button>
+            <div id="highScoreDisplay" class="high-score">טוען שיא עולמי...</div>
             <div id="currentScore" style="font-size: 20px; color: #fff;">ניקוד נוכחי: 0</div>
         </div>
 
@@ -233,93 +118,132 @@
         const canvas = document.getElementById("gameCanvas");
         const ctx = canvas.getContext("2d");
         const music = document.getElementById("bgMusic");
-        const muteBtn = document.getElementById("muteBtn");
         const grid = 20;
         let count = 0;
         let score = 0;
-        let highScore = localStorage.getItem("snakeHighScore") || 0;
+        let globalHighScore = 0;
         let requestID;
         let isMuted = false;
         
+        // מערכת זיקוקים
+        let particles = [];
+        function createFirework(x, y) {
+            for (let i = 0; i < 30; i++) {
+                particles.push({
+                    x: x, y: y,
+                    dx: (Math.random() - 0.5) * 8,
+                    dy: (Math.random() - 0.5) * 8,
+                    radius: Math.random() * 3,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    life: 50
+                });
+            }
+        }
+
+        const BIN_ID = '65ef4340dc74654018b06547';
+        const API_KEY = '$2a$10$X8mG.V0vR3/9x/E3K8lSGeI9iOqE1.z1y7xR8W7Z4B.I/vX5Y6P6O';
+
+        async function fetchGlobalHighScore() {
+            try {
+                const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+                    headers: { 'X-Master-Key': API_KEY }
+                });
+                const data = await res.json();
+                globalHighScore = data.record.highScore || 0;
+                document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + globalHighScore;
+            } catch (err) {
+                document.getElementById("highScoreDisplay").innerText = "שיא גינס: 0";
+            }
+        }
+
+        async function saveGlobalHighScore(newScore) {
+            if (newScore > globalHighScore) {
+                // הפעלת זיקוקים
+                for(let i=0; i<5; i++) {
+                    setTimeout(() => createFirework(Math.random()*canvas.width, Math.random()*canvas.height), i*300);
+                }
+                
+                try {
+                    await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+                        body: JSON.stringify({ highScore: newScore })
+                    });
+                    setTimeout(() => alert("🏆 וואו! שברת את השיא העולמי! השיא החדש: " + newScore), 1000);
+                    globalHighScore = newScore;
+                    document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + globalHighScore;
+                } catch (err) {}
+            } else {
+                alert("מזל טוב! צברת " + newScore + " נקודות! 🎸");
+            }
+        }
+
         let snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [], maxCells: 4 };
         let apple = { x: 320, y: 320 };
         const logoImg = new Image();
         logoImg.src = 'logo.PNG';
 
-        document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + highScore;
-
-        function getRandomInt(min, max) { return Math.floor(Math.random() * (max - min)) + min; }
-
-        function toggleMute() {
-            isMuted = !isMuted;
-            music.muted = isMuted;
-            muteBtn.innerText = isMuted ? "🔇" : "🔊";
-        }
-
         function loop() {
             requestID = requestAnimationFrame(loop);
-            if (++count < 6) return; 
+            if (++count < 6) {
+                // ציור חלקיקי הזיקוקים גם בפריימים של הדיליי
+                drawParticles();
+                return;
+            }
             count = 0;
             ctx.clearRect(0,0,canvas.width,canvas.height);
+            drawParticles();
 
-            snake.x += snake.dx;
-            snake.y += snake.dy;
-
-            if (snake.x < 0) snake.x = canvas.width - grid;
-            else if (snake.x >= canvas.width) snake.x = 0;
-            if (snake.y < 0) snake.y = canvas.height - grid;
-            else if (snake.y >= canvas.height) snake.y = 0;
-
+            snake.x += snake.dx; snake.y += snake.dy;
+            if (snake.x < 0) snake.x = canvas.width - grid; else if (snake.x >= canvas.width) snake.x = 0;
+            if (snake.y < 0) snake.y = canvas.height - grid; else if (snake.y >= canvas.height) snake.y = 0;
+            
             snake.cells.unshift({x: snake.x, y: snake.y});
             if (snake.cells.length > snake.maxCells) snake.cells.pop();
 
-            ctx.fillStyle = "white";
-            ctx.beginPath();
-            ctx.arc(apple.x + grid/2, apple.y + grid/2, grid/1.5, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.fillStyle = "white"; ctx.beginPath();
+            ctx.arc(apple.x + grid/2, apple.y + grid/2, grid/1.5, 0, Math.PI * 2); ctx.fill();
             ctx.drawImage(logoImg, apple.x, apple.y, grid, grid);
 
             snake.cells.forEach(function(cell, index) {
                 ctx.fillStyle = (index === 0) ? '#ffffff' : '#ff2a2a';
                 ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
-
                 if (cell.x === apple.x && cell.y === apple.y) {
-                    snake.maxCells++;
-                    score++;
+                    snake.maxCells++; score++;
                     document.getElementById("currentScore").innerText = "ניקוד נוכחי: " + score;
-                    apple.x = getRandomInt(0, 20) * grid;
-                    apple.y = getRandomInt(0, 20) * grid;
+                    apple.x = Math.floor(Math.random() * 19) * grid;
+                    apple.y = Math.floor(Math.random() * 19) * grid;
                 }
-
                 for (let i = index + 1; i < snake.cells.length; i++) {
                     if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) handleGameOver();
                 }
             });
         }
 
-        function handleGameOver() {
-            if (score > highScore) {
-                highScore = score;
-                localStorage.setItem("snakeHighScore", highScore);
-                document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + highScore;
-                alert("מזל טוב! שברת את שיא הגינס! צברת " + score + " נקודות! 🏆");
-            } else {
-                alert("מזל טוב! צברת " + score + " נקודות במשחק! 🎸");
-            }
-            resetGame();
+        function drawParticles() {
+            particles.forEach((p, i) => {
+                p.x += p.dx; p.y += p.dy; p.life--;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI*2);
+                ctx.fill();
+                if(p.life <= 0) particles.splice(i, 1);
+            });
         }
 
-        function finishGameManual() {
+        function handleGameOver() {
             cancelAnimationFrame(requestID);
-            handleGameOver();
+            saveGlobalHighScore(score);
+            resetGame();
             closeGame();
         }
 
+        function finishGameManual() { handleGameOver(); }
+
         function resetGame() {
-            score = 0;
-            document.getElementById("currentScore").innerText = "ניקוד נוכחי: 0";
+            score = 0; document.getElementById("currentScore").innerText = "ניקוד נוכחי: 0";
             snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [], maxCells: 4 };
-            apple = { x: getRandomInt(0, 20) * grid, y: getRandomInt(0, 20) * grid };
+            particles = [];
         }
 
         function changeDirection(dir) {
@@ -329,29 +253,33 @@
             else if (dir === 'RIGHT' && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
         }
 
-        document.addEventListener('keydown', function(e) {
-            if (e.which === 37) changeDirection('LEFT');
-            else if (e.which === 38) changeDirection('UP');
-            else if (e.which === 39) changeDirection('RIGHT');
-            else if (e.which === 40) changeDirection('DOWN');
-        });
-
         function openGame() {
             document.getElementById("mainPage").style.display = "none";
             document.getElementById("gameOverlay").style.display = "flex";
-            music.play().catch(e => console.log("Audio play failed"));
+            fetchGlobalHighScore();
+            music.play().catch(e => {});
             resetGame();
             requestAnimationFrame(loop);
         }
 
         function closeGame() {
             cancelAnimationFrame(requestID);
-            music.pause();
-            music.currentTime = 0;
+            music.pause(); music.currentTime = 0;
             document.getElementById("gameOverlay").style.display = "none";
             document.getElementById("mainPage").style.display = "block";
         }
+
+        function toggleMute() {
+            isMuted = !isMuted; music.muted = isMuted;
+            document.getElementById("muteBtn").innerText = isMuted ? "🔇" : "🔊";
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.which === 37) changeDirection('LEFT');
+            else if (e.which === 38) changeDirection('UP');
+            else if (e.which === 39) changeDirection('RIGHT');
+            else if (e.which === 40) changeDirection('DOWN');
+        });
     </script>
 </body>
 </html>
-
