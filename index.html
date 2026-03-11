@@ -13,6 +13,13 @@
             background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
             color: white;
             text-align: center;
+            overflow-x: hidden;
+            /* הגלילה מופעלת כברירת מחדל */
+            overflow-y: auto; 
+        }
+
+        /* מונע גלילה רק כשהמשחק פתוח */
+        body.game-open {
             overflow: hidden;
         }
 
@@ -37,7 +44,7 @@
             width: 100%; box-sizing: border-box;
         }
 
-        .btn:hover { transform: scale(1.05); background: #ff2a2a; }
+        .btn:hover { transform: scale(1.02); background: #ff2a2a; }
         .btn-game { background: linear-gradient(45deg, #ff2a2a, #5a0000); }
 
         /* מסך המשחק */
@@ -47,32 +54,34 @@
             align-items: center; justify-content: center; padding: 20px; box-sizing: border-box;
         }
 
-        #gameCanvas { border: 4px solid #ff2a2a; background: #000; max-width: 100%; max-height: 45vh; }
+        #gameCanvas { border: 4px solid #ff2a2a; background: #000; max-width: 100%; max-height: 40vh; }
         
-        /* הודעת סיום מעוצבת */
+        /* הודעת סיום */
         #endScreen {
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(20, 20, 20, 0.95); border: 2px solid #ff2a2a; padding: 30px;
-            border-radius: 20px; z-index: 1000; width: 80%; max-width: 300px;
-            box-shadow: 0 0 50px rgba(255, 42, 42, 0.4);
+            background: rgba(20, 20, 20, 0.95); border: 2px solid #ff2a2a; padding: 25px;
+            border-radius: 20px; z-index: 1000; width: 85%; max-width: 320px;
+            box-shadow: 0 0 50px rgba(255, 42, 42, 0.5);
         }
 
         .stats-container { margin-bottom: 15px; position: relative; width: 100%; max-width: 400px; }
-        .high-score { color: #ffd700; font-size: 24px; font-weight: bold; }
+        .high-score { color: #ffd700; font-size: 22px; font-weight: bold; }
 
         .controls { display: none; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 15px; direction: ltr; }
-        .control-btn { width: 55px; height: 55px; background: #333; border-radius: 10px; border: none; color: white; font-size: 24px; }
+        .control-btn { width: 55px; height: 55px; background: #333; border-radius: 10px; border: none; color: white; font-size: 24px; touch-action: manipulation; }
 
         .game-footer-btns { display: flex; gap: 10px; margin-top: 20px; width: 100%; max-width: 400px; }
         
-        footer { margin-top: 60px; color: #777; font-size: 14px; }
+        footer { margin-top: 60px; color: #777; font-size: 14px; padding-bottom: 20px; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
+
         @media (max-width: 480px) { .controls { display: grid; } }
     </style>
 </head>
 
-<body>
+<body id="mainBody">
 
     <div class="container" id="mainPage">
         <img class="logo" src="logo.PNG">
@@ -92,7 +101,7 @@
 
     <div id="gameOverlay">
         <div class="stats-container">
-            <button id="muteBtn" style="position: absolute; left: 10px; top: 0; background:none; border:none; color:white; font-size:24px;" onclick="toggleMute()">🔊</button>
+            <button id="muteBtn" style="position: absolute; left: 10px; top: 0; background:none; border:none; color:white; font-size:24px; cursor:pointer;" onclick="toggleMute()">🔊</button>
             <div id="highScoreDisplay" class="high-score">שיא גינס: 0</div>
             <div id="currentScore" style="font-size: 18px; color: #fff;">ניקוד: 0</div>
         </div>
@@ -100,9 +109,11 @@
         <canvas id="gameCanvas" width="400" height="400"></canvas>
 
         <div id="endScreen">
-            <h2 id="endStatus" style="color:#ff2a2a; margin-top:0;">המשחק נגמר</h2>
-            <p id="finalScoreText" style="font-size: 20px;">צברת 0 נקודות</p>
+            <h2 id="endStatus" style="color:#ff2a2a; margin-top:0; font-size: 24px;">המשחק נגמר</h2>
+            <p id="finalScoreText" style="font-size: 18px; margin-bottom: 20px;">צברת 0 נקודות</p>
+            
             <button class="btn" onclick="startNewGame()" style="padding:12px; font-size:16px; margin-bottom:10px;">🎮 משחק חדש</button>
+            <button class="btn" id="shareWa" style="background:#25D366; padding:12px; font-size:16px; margin-bottom:10px;">📱 שתף בוואטסאפ</button>
             <button class="btn" onclick="closeGame()" style="background:#444; padding:12px; font-size:16px;">🏠 חזרה לבית</button>
         </div>
 
@@ -114,8 +125,8 @@
         </div>
 
         <div class="game-footer-btns">
-            <button class="btn" style="background: #28a745;" onclick="finishGameManual()">🏁 סיום</button>
-            <button class="btn" style="background: #444;" onclick="closeGame()">🏠 בית</button>
+            <button class="btn" style="background: #28a745; font-size: 16px;" onclick="finishGameManual()">🏁 סיום</button>
+            <button class="btn" style="background: #444; font-size: 16px;" onclick="closeGame()">🏠 בית</button>
         </div>
     </div>
 
@@ -132,7 +143,6 @@
         let particles = [];
         let gameActive = false;
 
-        // שמירת שיא מקומית יציבה
         let highScore = localStorage.getItem("akordSnakeHS") || 0;
         document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + highScore;
 
@@ -141,10 +151,10 @@
         const logoImg = new Image(); logoImg.src = 'logo.PNG';
 
         function createFirework(x, y) {
-            for (let i = 0; i < 25; i++) {
+            for (let i = 0; i < 20; i++) {
                 particles.push({
-                    x, y, dx: (Math.random() - 0.5) * 6, dy: (Math.random() - 0.5) * 6,
-                    radius: Math.random() * 2.5, color: `hsl(${Math.random() * 360}, 100%, 60%)`, life: 40
+                    x, y, dx: (Math.random() - 0.5) * 5, dy: (Math.random() - 0.5) * 5,
+                    radius: Math.random() * 2, color: `hsl(${Math.random() * 360}, 100%, 60%)`, life: 35
                 });
             }
         }
@@ -152,7 +162,7 @@
         function loop() {
             if (!gameActive) return;
             requestID = requestAnimationFrame(loop);
-            if (++count < 6) { drawParticles(); return; }
+            if (++count < 7) { drawParticles(); return; }
             count = 0;
             ctx.clearRect(0,0,canvas.width,canvas.height);
             drawParticles();
@@ -164,7 +174,6 @@
             snake.cells.unshift({x: snake.x, y: snake.y});
             if (snake.cells.length > snake.maxCells) snake.cells.pop();
 
-            // אוכל עם עיגול לבן
             ctx.fillStyle = "white"; ctx.beginPath();
             ctx.arc(apple.x + grid/2, apple.y + grid/2, grid/1.5, 0, Math.PI * 2); ctx.fill();
             ctx.drawImage(logoImg, apple.x, apple.y, grid, grid);
@@ -201,12 +210,18 @@
                 localStorage.setItem("akordSnakeHS", highScore);
                 document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + highScore;
                 statusText = "🏆 שיא גינס חדש!";
-                for(let i=0; i<4; i++) setTimeout(() => createFirework(Math.random()*canvas.width, Math.random()*canvas.height), i*300);
+                for(let i=0; i<5; i++) setTimeout(() => createFirework(Math.random()*canvas.width, Math.random()*canvas.height), i*300);
             }
             
             document.getElementById("endStatus").innerText = statusText;
             document.getElementById("finalScoreText").innerText = "צברת " + score + " נקודות";
             document.getElementById("endScreen").style.display = "block";
+
+            // עדכון לינק שיתוף
+            document.getElementById("shareWa").onclick = () => {
+                const text = encodeURIComponent(`שברתי את השיא במשחק של אקורד ראשון! צברתי ${score} נקודות 🎸 בואו נראה אם תצליחו לעקוף אותי: ${window.location.href}`);
+                window.open(`https://wa.me/?text=${text}`, '_blank');
+            };
         }
 
         function startNewGame() {
@@ -219,11 +234,10 @@
             requestAnimationFrame(loop);
         }
 
-        function finishGameManual() {
-            if (gameActive) endGame();
-        }
+        function finishGameManual() { if (gameActive) endGame(); }
 
         function openGame() {
+            document.getElementById("mainBody").classList.add("game-open");
             document.getElementById("mainPage").style.display = "none";
             document.getElementById("gameOverlay").style.display = "flex";
             music.play().catch(() => {});
@@ -234,6 +248,7 @@
             gameActive = false;
             cancelAnimationFrame(requestID);
             music.pause(); music.currentTime = 0;
+            document.getElementById("mainBody").classList.remove("game-open");
             document.getElementById("endScreen").style.display = "none";
             document.getElementById("gameOverlay").style.display = "none";
             document.getElementById("mainPage").style.display = "block";
