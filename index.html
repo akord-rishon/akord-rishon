@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="he" dir="rtl">
 
 <head>
@@ -37,7 +36,7 @@
             width: 220px;
             margin-bottom: 25px;
             animation: float 4s ease-in-out infinite;
-            max-width: 100%; /* מוודא שהלוגו לא בורח מהמסך בטלפון */
+            max-width: 100%;
         }
 
         h1 {
@@ -73,17 +72,71 @@
             gap: 10px;
             transition: 0.3s;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            border: none;
+            cursor: pointer;
+            width: 100%;
         }
 
         .btn:hover {
-            transform: scale(1.07);
+            transform: scale(1.05);
             background: #ff2a2a;
             box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
         }
 
-        /* אפקט לחיצה בטלפון */
-        .btn:active {
-            transform: scale(0.95);
+        .btn-game {
+            background: linear-gradient(45deg, #ff2a2a, #330000);
+            border: 2px solid gold;
+        }
+
+        /* עיצוב חלון המשחק */
+        #gameOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.98);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #gameCanvas {
+            border: 4px solid #ff2a2a;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            background: #000;
+            max-width: 100%;
+            max-height: 50vh;
+        }
+
+        .stats-container {
+            margin-bottom: 15px;
+        }
+
+        .high-score {
+            color: #ffd700;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* כפתורי שליטה לנייד */
+        .controls {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            width: 60px;
+            height: 60px;
+            background: #444;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            font-size: 24px;
         }
 
         footer {
@@ -103,68 +156,168 @@
             100% { transform: translateY(0); }
         }
 
-        /* התאמה מיוחדת למכשירים ניידים */
         @media (max-width: 480px) {
-            h1 {
-                font-size: 32px;
-            }
-            .container {
-                padding: 20px 15px;
-            }
-            .btn {
-                padding: 15px;
-                font-size: 18px;
-            }
-            .logo {
-                width: 160px;
-            }
+            h1 { font-size: 32px; }
+            .controls { display: grid; }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-
+    <div class="container" id="mainPage">
         <img class="logo" src="logo.PNG">
-
         <h1>אקורד ראשון</h1>
-
-        <div class="subtitle">
-            עקבו אחרינו בכל הרשתות 🎵
-        </div>
+        <div class="subtitle">עקבו אחרינו בכל הרשתות 🎵</div>
 
         <div class="links">
-
-            <a class="btn" href="https://www.tiktok.com/@first_chord?_r=1&_t=ZS-94bPGKPtq1l" target="_blank">
-                🎵 טיקטוק
-            </a>
-
-            <a class="btn" href="https://www.instagram.com/first_chord?igsh=YWtiem43cXBhMnVr&utm_source=qr" target="_blank">
-                📸 אינסטגרם
-            </a>
-
-            <a class="btn" href="https://www.facebook.com/share/1GkQ8phhyr/?mibextid=wwXIfr" target="_blank">
-                👍 פייסבוק
-            </a>
-
-            <a class="btn" href="https://youtube.com/@first_chord?si=DOU_n5thYuaH4vM-" target="_blank">
-                ▶️ יוטיוב
-            </a>
-
-            <a class="btn" href="https://whatsapp.com/channel/0029Vb6I5yh6GcGEigUMEu3J" target="_blank">
-                💬 וואטסאפ
-            </a>
-
+            <a class="btn" href="https://www.tiktok.com/@first_chord?_r=1&_t=ZS-94bPGKPtq1l" target="_blank">🎵 טיקטוק</a>
+            <a class="btn" href="https://www.instagram.com/first_chord?igsh=YWtiem43cXBhMnVr&utm_source=qr" target="_blank">📸 אינסטגרם</a>
+            <a class="btn" href="https://www.facebook.com/share/1GkQ8phhyr/?mibextid=wwXIfr" target="_blank">👍 פייסבוק</a>
+            <a class="btn" href="https://youtube.com/@first_chord?si=DOU_n5thYuaH4vM-" target="_blank">▶️ יוטיוב</a>
+            <a class="btn" href="https://whatsapp.com/channel/0029Vb6I5yh6GcGEigUMEu3J" target="_blank">💬 וואטסאפ</a>
+            
+            <button class="btn btn-game" onclick="openGame()">🐍 שחק אקורד ראשון</button>
         </div>
 
-        <footer>
-            ©️ אקורד ראשון
-        </footer>
-
+        <footer>©️ אקורד ראשון</footer>
     </div>
 
+    <div id="gameOverlay">
+        <div class="stats-container">
+            <div id="highScoreDisplay" class="high-score">שיא גינס: 0</div>
+            <div id="currentScore" style="font-size: 20px;">ניקוד נוכחי: 0</div>
+        </div>
+
+        <canvas id="gameCanvas" width="400" height="400"></canvas>
+
+        <div class="controls">
+            <div></div><button class="control-btn" onclick="changeDirection('UP')">▲</button><div></div>
+            <button class="control-btn" onclick="changeDirection('LEFT')">◀</button>
+            <button class="control-btn" onclick="changeDirection('DOWN')">▼</button>
+            <button class="control-btn" onclick="changeDirection('RIGHT')">▶</button>
+        </div>
+
+        <button class="btn" style="margin-top: 30px; background: #444; width: auto; padding: 10px 30px;" onclick="closeGame()">
+            🏠 חזרה לדף הראשי
+        </button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+        const grid = 20;
+        let count = 0;
+        let score = 0;
+        let highScore = localStorage.getItem("snakeHighScore") || 0;
+        
+        let snake = {
+            x: 160, y: 160,
+            dx: grid, dy: 0,
+            cells: [],
+            maxCells: 4
+        };
+        
+        let apple = { x: 320, y: 320 };
+        const logoImg = new Image();
+        logoImg.src = 'logo.PNG';
+
+        document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + highScore;
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
+
+        function loop() {
+            requestID = requestAnimationFrame(loop);
+            if (++count < 6) return; // מהירות המשחק
+            count = 0;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+
+            snake.x += snake.dx;
+            snake.y += snake.dy;
+
+            // גבולות
+            if (snake.x < 0) snake.x = canvas.width - grid;
+            else if (snake.x >= canvas.width) snake.x = 0;
+            if (snake.y < 0) snake.y = canvas.height - grid;
+            else if (snake.y >= canvas.height) snake.y = 0;
+
+            snake.cells.unshift({x: snake.x, y: snake.y});
+            if (snake.cells.length > snake.maxCells) snake.cells.pop();
+
+            // ציור ה"אוכל" (הלוגו)
+            ctx.drawImage(logoImg, apple.x, apple.y, grid, grid);
+
+            // ציור הנחש
+            ctx.fillStyle = '#ff2a2a';
+            snake.cells.forEach(function(cell, index) {
+                if (index === 0) ctx.fillStyle = '#ffffff'; // ראש הנחש בלבן
+                else ctx.fillStyle = '#ff2a2a';
+                ctx.fillRect(cell.x, cell.y, grid-1, grid-1);
+
+                // התנגשות בעצמו
+                if (cell.x === apple.x && cell.y === apple.y) {
+                    snake.maxCells++;
+                    score++;
+                    document.getElementById("currentScore").innerText = "ניקוד נוכחי: " + score;
+                    apple.x = getRandomInt(0, 20) * grid;
+                    apple.y = getRandomInt(0, 20) * grid;
+                }
+
+                for (let i = index + 1; i < snake.cells.length; i++) {
+                    if (cell.x === snake.cells[i].x && cell.y === snake.cells[i].y) {
+                        endGame();
+                    }
+                }
+            });
+        }
+
+        function endGame() {
+            if (score > highScore) {
+                highScore = score;
+                localStorage.setItem("snakeHighScore", highScore);
+                document.getElementById("highScoreDisplay").innerText = "שיא גינס: " + highScore;
+                alert("וואו! שברת שיא גינס חדש: " + score);
+            } else {
+                alert("המשחק נגמר! ניקוד: " + score);
+            }
+            resetGame();
+        }
+
+        function resetGame() {
+            score = 0;
+            document.getElementById("currentScore").innerText = "ניקוד נוכחי: 0";
+            snake = { x: 160, y: 160, dx: grid, dy: 0, cells: [], maxCells: 4 };
+            apple = { x: getRandomInt(0, 20) * grid, y: getRandomInt(0, 20) * grid };
+        }
+
+        function changeDirection(dir) {
+            if (dir === 'UP' && snake.dy === 0) { snake.dy = -grid; snake.dx = 0; }
+            else if (dir === 'DOWN' && snake.dy === 0) { snake.dy = grid; snake.dx = 0; }
+            else if (dir === 'LEFT' && snake.dx === 0) { snake.dx = -grid; snake.dy = 0; }
+            else if (dir === 'RIGHT' && snake.dx === 0) { snake.dx = grid; snake.dy = 0; }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.which === 37) changeDirection('LEFT');
+            else if (e.which === 38) changeDirection('UP');
+            else if (e.which === 39) changeDirection('RIGHT');
+            else if (e.which === 40) changeDirection('DOWN');
+        });
+
+        function openGame() {
+            document.getElementById("mainPage").style.display = "none";
+            document.getElementById("gameOverlay").style.display = "flex";
+            resetGame();
+            requestID = requestAnimationFrame(loop);
+        }
+
+        function closeGame() {
+            cancelAnimationFrame(requestID);
+            document.getElementById("gameOverlay").style.display = "none";
+            document.getElementById("mainPage").style.display = "block";
+        }
+    </script>
 </body>
-
 </html>
-
