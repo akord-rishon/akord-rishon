@@ -15,137 +15,155 @@
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap" rel="stylesheet">
-  
-<style>
 
-body{
-margin:0;
-font-family:'Rubik',sans-serif;
-background:linear-gradient(135deg,#0a0a0a,#1a1a1a);
-color:white;
-text-align:center;
-overflow-x:hidden;
-}
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Rubik', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            color: white;
+            text-align: center;
+            overflow-x: hidden;
+        }
 
-.container{
-max-width:650px;
-margin:auto;
-padding:40px 20px;
-animation:fadeIn 1.5s ease;
-}
+        .container {
+            max-width: 650px;
+            margin: auto;
+            padding: 40px 20px;
+            animation: fadeIn 1.5s ease;
+        }
 
-.logo{
-width:220px;
-margin-bottom:25px;
-animation:float 4s ease-in-out infinite;
-}
+        .logo {
+            width: 220px;
+            margin-bottom: 25px;
+            animation: float 4s ease-in-out infinite;
+            max-width: 100%; /* מוודא שהלוגו לא בורח מהמסך בטלפון */
+        }
 
-h1{
-font-size:42px;
-margin-bottom:10px;
-color:#ff2a2a;
-text-shadow:0 0 15px rgba(255,0,0,0.6);
-}
+        h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+            color: #ff2a2a;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+        }
 
-.subtitle{
-color:#aaa;
-margin-bottom:40px;
-font-size:18px;
-}
+        .subtitle {
+            color: #aaa;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
 
-.links{
-display:flex;
-flex-direction:column;
-gap:16px;
-}
+        .links {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
 
-.btn{
-text-decoration:none;
-background:#e11b1b;
-padding:18px;
-border-radius:14px;
-font-size:20px;
-font-weight:bold;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:10px;
-transition:0.3s;
-box-shadow:0 8px 25px rgba(0,0,0,0.5);
-}
+        .btn {
+            text-decoration: none;
+            background: #e11b1b;
+            padding: 18px;
+            border-radius: 14px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: 0.3s;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+        }
 
-.btn:hover{
-transform:scale(1.07);
-background:#ff2a2a;
-box-shadow:0 0 20px rgba(255,0,0,0.7);
-}
+        .btn:hover {
+            transform: scale(1.07);
+            background: #ff2a2a;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
 
-footer{
-margin-top:60px;
-color:#777;
-font-size:14px;
-}
+        /* אפקט לחיצה בטלפון */
+        .btn:active {
+            transform: scale(0.95);
+        }
 
-@keyframes fadeIn{
-from{opacity:0;transform:translateY(30px);}
-to{opacity:1;transform:translateY(0);}
-}
+        footer {
+            margin-top: 60px;
+            color: #777;
+            font-size: 14px;
+        }
 
-@keyframes float{
-0%{transform:translateY(0);}
-50%{transform:translateY(-8px);}
-100%{transform:translateY(0);}
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-</style>
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+        }
 
+        /* התאמה מיוחדת למכשירים ניידים */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 32px;
+            }
+            .container {
+                padding: 20px 15px;
+            }
+            .btn {
+                padding: 15px;
+                font-size: 18px;
+            }
+            .logo {
+                width: 160px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container">
+    <div class="container">
 
-<img class="logo" src="logo.PNG">
+        <img class="logo" src="logo.PNG">
 
-<h1>אקורד ראשון</h1>
+        <h1>אקורד ראשון</h1>
 
-<div class="subtitle">
-עקבו אחרינו בכל הרשתות 🎵
-</div>
+        <div class="subtitle">
+            עקבו אחרינו בכל הרשתות 🎵
+        </div>
 
-<div class="links">
+        <div class="links">
 
-<a class="btn" href="https://www.tiktok.com/@first_chord?_r=1&_t=ZS-94bPGKPtq1l" target="_blank">
-🎵 טיקטוק
-</a>
+            <a class="btn" href="https://www.tiktok.com/@first_chord?_r=1&_t=ZS-94bPGKPtq1l" target="_blank">
+                🎵 טיקטוק
+            </a>
 
-<a class="btn" href="https://www.instagram.com/first_chord?igsh=YWtiem43cXBhMnVr&utm_source=qr" target="_blank">
-📸 אינסטגרם
-</a>
+            <a class="btn" href="https://www.instagram.com/first_chord?igsh=YWtiem43cXBhMnVr&utm_source=qr" target="_blank">
+                📸 אינסטגרם
+            </a>
 
-<a class="btn" href="https://www.facebook.com/share/1GkQ8phhyr/?mibextid=wwXIfr" target="_blank">
-👍 פייסבוק
-</a>
+            <a class="btn" href="https://www.facebook.com/share/1GkQ8phhyr/?mibextid=wwXIfr" target="_blank">
+                👍 פייסבוק
+            </a>
 
-<a class="btn" href="https://youtube.com/@first_chord?si=DOU_n5thYuaH4vM-" target="_blank">
-▶️ יוטיוב
-</a>
+            <a class="btn" href="https://youtube.com/@first_chord?si=DOU_n5thYuaH4vM-" target="_blank">
+                ▶️ יוטיוב
+            </a>
 
-<a class="btn" href="https://whatsapp.com/channel/0029Vb6I5yh6GcGEigUMEu3J" target="_blank">
-💬 וואטסאפ
-</a>
+            <a class="btn" href="https://whatsapp.com/channel/0029Vb6I5yh6GcGEigUMEu3J" target="_blank">
+                💬 וואטסאפ
+            </a>
 
-</div>
+        </div>
 
-<footer>
-© אקורד ראשון
-</footer>
+        <footer>
+            ©️ אקורד ראשון
+        </footer>
 
-</div>
+    </div>
 
 </body>
 
 </html>
-
-
