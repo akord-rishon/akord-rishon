@@ -79,6 +79,30 @@
         @keyframes float { 0% { transform: translateY(0); } 50% { transform: translateY(-8px); } 100% { transform: translateY(0); } }
 
         @media (max-width: 480px) { .controls { display: grid; } }
+
+        /* תוספת עיצוב יצירת קשר */
+        .contact-trigger {
+            position: fixed; bottom: 25px; right: 25px; background: #e11b1b;
+            width: 55px; height: 55px; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 26px;
+            color: white; cursor: pointer; box-shadow: 0 0 20px rgba(225, 27, 27, 0.4);
+            z-index: 1001; transition: 0.3s;
+        }
+        #contactModal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95); z-index: 1002; align-items: center; justify-content: center;
+        }
+        .modal-content {
+            background: #1a1a1a; padding: 30px; border-radius: 20px; width: 85%;
+            max-width: 380px; border: 2px solid #ff2a2a; position: relative; text-align: right;
+        }
+        .close-modal { position: absolute; top: 15px; left: 15px; color: #777; font-size: 24px; cursor: pointer; }
+        .contact-input {
+            width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px;
+            border: 1px solid #333; background: #0a0a0a; color: white;
+            box-sizing: border-box; font-family: 'Rubik', sans-serif; font-size: 16px;
+        }
+        textarea.contact-input { height: 120px; resize: none; }
     </style>
 </head>
 
@@ -128,6 +152,22 @@
         <div class="game-footer-btns">
             <button class="btn" style="background: #28a745; font-size: 16px;" onclick="finishGameManual()">🏁 סיום</button>
             <button class="btn" style="background: #444; font-size: 16px;" onclick="closeGame()">🏠 בית</button>
+        </div>
+    </div>
+
+    <div class="contact-trigger" onclick="toggleContact(true)">📩</div>
+
+    <div id="contactModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleContact(false)">✕</span>
+            <h2 style="color:#ff2a2a; margin-top:0; font-size: 24px;">דברו איתנו 🎸</h2>
+            <form action="https://api.web3forms.com/submit" method="POST">
+                <input type="hidden" name="access_key" value="0fdc1bd6-cf3f-4957-aec6-d215479b4448">
+                <input type="text" name="name" placeholder="שם מלא" class="contact-input" required>
+                <input type="email" name="email" placeholder="אימייל לחזרה" class="contact-input" required>
+                <textarea name="message" placeholder="איך אפשר לעזור?" class="contact-input" maxlength="2000" required></textarea>
+                <button type="submit" class="btn" style="margin-top:10px; width: 100%;">שליחת פנייה</button>
+            </form>
         </div>
     </div>
 
@@ -274,8 +314,12 @@
             if (e.which === 39) changeDirection('RIGHT');
             if (e.which === 40) changeDirection('DOWN');
         });
+
+        // פונקציית פתיחת/סגירת יצירת קשר
+        function toggleContact(show) {
+            const modal = document.getElementById('contactModal');
+            modal.style.display = show ? 'flex' : 'none';
+        }
     </script>
 </body>
 </html>
-
-
