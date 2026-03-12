@@ -161,7 +161,7 @@
         <div class="modal-content">
             <span class="close-modal" onclick="toggleContact(false)">✕</span>
             <h2 style="color:#ff2a2a; margin-top:0; font-size: 24px;">דברו איתנו 🎸</h2>
-            <form action="https://api.web3forms.com/submit" method="POST">
+            <form action="https://api.web3forms.com/submit" method="POST" onsubmit="setTimeout(() => { this.reset(); }, 500);">
                 <input type="hidden" name="access_key" value="0fdc1bd6-cf3f-4957-aec6-d215479b4448">
                 <input type="text" name="name" placeholder="שם מלא" class="contact-input" required>
                 <input type="email" name="email" placeholder="אימייל לחזרה" class="contact-input" required>
